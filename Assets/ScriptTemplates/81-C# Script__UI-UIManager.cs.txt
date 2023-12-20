@@ -1,0 +1,110 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.Audio;
+
+public class UIManager : MonoBehaviour {
+    [Header("Audio")]
+    public AudioMixer audioMixer;
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider sfxSlider;
+
+    [Header("Main Menu")]
+    public GameObject mainMenu;
+    public GameObject settingsMenu;
+    public GameObject pauseMenu;
+
+    [Header("Buttons")]
+    public Button startButton;
+    public Button settingsButton;
+    public Button mainMenuButton;
+    public Button ReturnButton;
+    public Button quitButton;
+    public Button applyButton;
+
+    [Header("Slider")]
+    public Slider volSlider;
+
+    [Header("Text")]
+    public Text volSliderText;
+
+    // Start is called before the first frame update
+    void Start() {
+        // Checks to see if these objects exist so that we avoid NULL references
+        if (startButton) {
+            startButton.onClick.AddListener(StartGame);
+        }
+        if (settingsButton) {
+            settingsButton.onClick.AddListener(ShowSettingsMenu);
+        }
+        if (mainMenuButton) {
+            mainMenuButton.onClick.AddListener(ShowMainMenu);
+        }
+        if (ReturnButton) {
+            ReturnButton.onClick.AddListener(ShowMainMenu);
+        }
+        if (quitButton) {
+            quitButton.onClick.AddListener(Quit);
+        }
+        if (applyButton) {
+            applyButton.onClick.AddListener(Apply);
+        }
+        if(masterSlider) {
+            masterSlider.onValueChanged.AddListener(delegate { OnSliderValueChanged(masterSlider.value); });
+        }
+        if(musicSlider) {
+            musicSlider.onValueChanged.AddListener(delegate { OnMusicSliderValueChanged(musicSlider.value); });
+        }
+        if(sfxSlider) {
+            sfxSlider.onValueChanged.AddListener(delegate { OnSFXSliderValueChanged(sfxSlider.value); });
+        }
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
+
+    private void StartGame() {
+        SceneManager.LoadScene("MainLevel");
+    }
+
+    private void ShowSettingsMenu() {
+        mainMenu.SetActive(false);
+        settingsMenu.SetActive(true);
+    }
+
+    private void Quit() {
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        Application.Quit();
+    #endif
+    }
+
+    private void ShowMainMenu() {
+        mainMenu.SetActive(true);
+        settingsMenu.SetActive(false);
+    }
+
+    private void Apply() { //using as the apply button
+        //hide settings menu
+        mainMenu.SetActive(true);
+        Player_Sprite.SetActive(true);
+        settingsMenu.SetActive(false);
+    }
+    void OnSliderValueChanged(float value) {
+        audioMixer.SetFloat("MasterVolume", value);
+    }
+    void OnMusicSliderValueChanged(float value) {
+        audioMixer.SetFloat("MusicVolume", value);
+    }
+    void OnSFXSliderValueChanged(float value) {
+        audioMixer.SetFloat("SFXVolume", value);
+    }
+}
