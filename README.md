@@ -1,6 +1,6 @@
 # Script_Templates
  
-Script Templates naming
+##Script Templates naming
 You can see that all the template scripts files have a specific naming syntax :
 
 85-Other Scripts__Scriptable Object-MyClass.cs.txt
