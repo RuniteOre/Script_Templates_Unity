@@ -1,4 +1,6 @@
 # Script_Templates
+
+ In this project is an example of moving the Base script into a submenu item, and changing it, as well as adding a new script to another submenu item.
  
 ## Further Info:
 
